@@ -1,1 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defensive Coding Lab - Login</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f9; }
+        .login-card { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 300px; }
+        h2 { color: #333; font-size: 1.2rem; margin-bottom: 1rem; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .security-log { margin-top: 20px; font-size: 0.8rem; color: #666; background: #eee; padding: 10px; border-radius: 4px; word-break: break-all; }
+    </style>
+</head>
+<body>
+
+<div class="login-card">
+    <h2>Secure Gate System</h2>
+    <input type="text" id="username" placeholder="Username (Try <script>)">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="handleLogin()">Secure Login</button>
+
+    <div id="logArea" class="security-log">
+        <strong>Security Log:</strong> No activity
+    </div>
+</div>
+
+<script>
+    // The Sanitization Function from before
+    function sanitizeInput(userInput) {
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#x27;',
+            "/": '&#x2F;',
+        };
+        const reg = /[&<>"'/]/ig;
+        return userInput.replace(reg, (match) => (map[match]));
+    }
+
+    function handleLogin() {
+        const usernameInput = document.getElementById('username').value;
+        const logArea = document.getElementById('logArea');
+
+        // Step 1: Sanitize the input
+        const cleanData = sanitizeInput(usernameInput);
+
+        // Step 2: Display what happened
+        logArea.innerHTML = `<strong>Security Log:</strong><br>
+                             Raw: ${usernameInput} <br>
+                             <span style="color: green;">Sanitized: ${cleanData}</span>`;
+        
+        console.log("Data sanitized before processing:", cleanData);
+    }
+</script>
+
+</body>
+</html>
 
